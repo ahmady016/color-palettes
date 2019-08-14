@@ -1,7 +1,12 @@
 import React from 'react'
-import styled, { css } from 'styled-components'
-import Button from '@material-ui/core/Button'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
+import Button from '@material-ui/core/Button'
+import styled from 'styled-components'
+
+import getColorsLevels from '../helpers/colorLevels'
+import seedPalettes from '../helpers/seedPalettes'
+
+console.log("TCL: getColorsLevels", getColorsLevels(seedPalettes['flat-ui-colors-indian'].colors))
 
 const PaletteWrapper = styled.div`
   height: 100%;
@@ -92,8 +97,8 @@ const CopyMessageText = styled.div`
   text-transform: uppercase;
 `
 const CopyMessageColor = styled.div`
-  font-size: 2rem;
-  font-weight: 100;
+  font-size: 1.5rem;
+  font-weight: 200;
 `
 
 function ColorBox ({ name, color }) {
@@ -129,7 +134,7 @@ export default function Palette ({ name, emoji, colors }) {
       <h3>{emoji} - {name}</h3>
       {/* palette color boxes */}
       <PaletteColors className='palette-colors'>
-        {colors.map( color => ( <ColorBox {...color} /> ) )}
+        {colors.map( color => ( <ColorBox key={color.name} {...color} /> ) )}
       </PaletteColors>
       {/* palette footer */}
       <h6>{emoji} - {name}</h6>
