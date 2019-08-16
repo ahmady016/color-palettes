@@ -182,7 +182,7 @@ export default {
   },
   "flat-ui-colors-indian": {
     name: "Flat UI Colors Indian",
-    emoji: "🇮🇳",
+    emoji: "🎨",
     colors: [
       { name: "OrchidOrange", color: "#FEA47F" },
       { name: "SpiroDiscoBall", color: "#25CCF7" },

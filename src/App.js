@@ -13,12 +13,9 @@ const currentPalette = {
 
 function App () {
   return (
-    <>
-      <h1>color palettes</h1>
-      <div className='container h-75'>
-        <Palette {...currentPalette} />
-      </div>
-    </>
+    <div className='container h-75'>
+      <Palette {...currentPalette} />
+    </div>
   )
 }
 

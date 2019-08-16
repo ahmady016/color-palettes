@@ -1,0 +1,21 @@
+.rc-slider {
+  width: 20rem;
+}
+.rc-slider-track {
+  background-color: transparent;
+}
+.rc-slider-rail {
+  height: 10px;
+}
+.rc-slider-handle,
+.rc-slider-handle:active,
+.rc-slider-handle:focus,
+.rc-slider-handle:hover {
+  background-color: #177765;
+  width: 20px;
+  height: 20px;
+  margin-top: -5px;
+  border: none;
+  outline: none;
+  box-shadow: none;
+}

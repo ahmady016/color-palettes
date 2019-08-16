@@ -5,6 +5,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 import Button from '@material-ui/core/Button'
 import Slider from 'rc-slider'
 import 'rc-slider/assets/index.css'
+import '../rc-slider.css'
 
 //#region styled components
 const PaletteWrapper = styled.div`
@@ -132,8 +133,19 @@ export default function Palette ({ name, emoji, colors }) {
   return (
     <PaletteWrapper className='palette'>
       {/* palette header */}
-      <h3>{emoji} - {name}</h3>
-      <Slider defaultValue={currentLevel} step={100} min={100} max={900} onAfterChange={setCurrentLevel} />
+      <div className='flex-between px-1'>
+        <h3>{emoji} {name}</h3>
+        <div>
+          <span>Level: {currentLevel}</span>
+          <Slider
+            defaultValue={currentLevel}
+            step={100}
+            min={100}
+            max={900}
+            onAfterChange={setCurrentLevel}
+          />
+        </div>
+      </div>
       {/* palette color boxes */}
       <PaletteColors className='palette-colors'>
         {colors[currentLevel].map( color => ( <ColorBox key={color.name} {...color} /> ) )}
