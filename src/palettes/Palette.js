@@ -1,13 +1,12 @@
 import React from 'react'
+
+import styled from 'styled-components'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import Button from '@material-ui/core/Button'
-import styled from 'styled-components'
+import Slider from 'rc-slider'
+import 'rc-slider/assets/index.css'
 
-import getColorsLevels from '../helpers/colorLevels'
-import seedPalettes from '../helpers/seedPalettes'
-
-console.log("TCL: getColorsLevels", getColorsLevels(seedPalettes['flat-ui-colors-indian'].colors))
-
+//#region styled components
 const PaletteWrapper = styled.div`
   height: 100%;
 `
@@ -100,41 +99,44 @@ const CopyMessageColor = styled.div`
   font-size: 1.5rem;
   font-weight: 200;
 `
+//#endregion
 
-function ColorBox ({ name, color }) {
+function ColorBox ({ name, hex }) {
   const [copied, setCopied] = React.useState(false)
   const doCopy = React.useCallback( () => {
     setCopied(true)
     setTimeout(() => setCopied(false), 1500)
   }, [])
   return (
-    <ColorBoxWrapper color={color}>
+    <ColorBoxWrapper color={hex}>
       <ColorBoxContent>
         <ColorName>{name}</ColorName>
         <ButtonMore size='small' variant='contained'>MORE</ButtonMore>
       </ColorBoxContent>
       <ColorBoxCopyWrapper>
-        <CopyToClipboard text={color} onCopy={doCopy}>
+        <CopyToClipboard text={hex} onCopy={doCopy}>
           <Button size='large' variant='contained'>COPY</Button>
         </CopyToClipboard>
       </ColorBoxCopyWrapper>
-      <CopyOverlay className={copied ? 'active' : ''} color={color} />
+      <CopyOverlay className={copied ? 'active' : ''} color={hex} />
       <CopyMessage className={copied ? 'active' : ''}>
         <CopyMessageText>Copied</CopyMessageText>
-        <CopyMessageColor>{color}</CopyMessageColor>
+        <CopyMessageColor>{hex}</CopyMessageColor>
       </CopyMessage>
     </ColorBoxWrapper>
   )
 }
 
 export default function Palette ({ name, emoji, colors }) {
+  const [currentLevel, setCurrentLevel] = React.useState(500)
   return (
     <PaletteWrapper className='palette'>
       {/* palette header */}
       <h3>{emoji} - {name}</h3>
+      <Slider defaultValue={currentLevel} step={100} min={100} max={900} onAfterChange={setCurrentLevel} />
       {/* palette color boxes */}
       <PaletteColors className='palette-colors'>
-        {colors.map( color => ( <ColorBox key={color.name} {...color} /> ) )}
+        {colors[currentLevel].map( color => ( <ColorBox key={color.name} {...color} /> ) )}
       </PaletteColors>
       {/* palette footer */}
       <h6>{emoji} - {name}</h6>
