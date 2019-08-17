@@ -7,6 +7,9 @@ import Button from '@material-ui/core/Button'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import InputLabel from '@material-ui/core/InputLabel'
+import Snackbar from '@material-ui/core/Snackbar'
+import IconButton from '@material-ui/core/IconButton'
+import CloseIcon from '@material-ui/icons/Close'
 
 import colorFormats from '../helpers/colorFormats'
 
@@ -115,33 +118,33 @@ const CopyMessageColor = styled.div`
 function PaletteHeader ({ paletteName, paletteEmoji, level, setLevel, colorFormat, setColorFormat }) {
   return (
     <header className='flex-between px-1'>
-    <h3>{paletteEmoji} {paletteName}</h3>
-    <div>
-      <InputLabel htmlFor='color-format'>Color Format</InputLabel>
-      <ColorFormatSelect
-        value={colorFormat}
-        onChange={e => setColorFormat(e.target.value)}
-        inputProps={{
-          id: 'color-format',
-          name: 'color-format'
-        }}
-      >
-        {colorFormats.map(({ value, text }) => (
-          <MenuItem value={value}>{value.toUpperCase()} - {text}</MenuItem>
-        ))}
-      </ColorFormatSelect>
-    </div>
-    <div>
-      <span>Level: {level}</span>
-      <Slider
-        defaultValue={level}
-        step={100}
-        min={100}
-        max={900}
-        onAfterChange={setLevel}
-      />
-    </div>
-  </header>
+      <h3>{paletteEmoji} {paletteName}</h3>
+      <div>
+        <InputLabel htmlFor='color-format'>Color Format</InputLabel>
+        <ColorFormatSelect
+          value={colorFormat}
+          onChange={e => setColorFormat(e.target.value)}
+          inputProps={{
+            id: 'color-format',
+            name: 'color-format'
+          }}
+        >
+          {colorFormats.map(({ value, text }) => (
+            <MenuItem key={value} value={value}>{value.toUpperCase()} - {text}</MenuItem>
+          ))}
+        </ColorFormatSelect>
+      </div>
+      <div>
+        <span>Level: {level}</span>
+        <Slider
+          defaultValue={level}
+          step={100}
+          min={100}
+          max={900}
+          onAfterChange={setLevel}
+        />
+      </div>
+    </header>
   )
 }
 
@@ -151,6 +154,7 @@ function ColorBox ({ name, color }) {
     setCopied(true)
     setTimeout(() => setCopied(false), 1500)
   }, [])
+
   return (
     <ColorBoxWrapper color={color}>
       <ColorBoxContent>
@@ -174,28 +178,65 @@ function ColorBox ({ name, color }) {
 function Palette ({ name, emoji, colors }) {
   const [currentLevel, setCurrentLevel] = React.useState(500)
   const [colorFormat, setColorFormat] = React.useState('hex')
+  const [snackbarOpened, setSnackbarOpened] = React.useState(false)
+  const handleColorFormatChange = React.useCallback(
+    (value) => {
+      setColorFormat(value)
+      setSnackbarOpened(true)
+    },
+    [setColorFormat, setSnackbarOpened]
+  )
+  const handleSnackbarClose = React.useCallback(
+    () => setSnackbarOpened(false),
+    [setSnackbarOpened]
+  )
   return (
-    <PaletteWrapper className="palette">
-      {/* palette header */}
-      <PaletteHeader
-        paletteName={name}
-        paletteEmoji={emoji}
-        level={currentLevel}
-        setLevel={setCurrentLevel}
-        colorFormat={colorFormat}
-        setColorFormat={setColorFormat}
+    <>
+      <PaletteWrapper className='palette'>
+        {/* palette header */}
+        <PaletteHeader
+          paletteName={name}
+          paletteEmoji={emoji}
+          level={currentLevel}
+          setLevel={setCurrentLevel}
+          colorFormat={colorFormat}
+          setColorFormat={handleColorFormatChange}
+        />
+        {/* palette color boxes */}
+        <PaletteColors className='palette-colors'>
+          {colors[currentLevel].map(color => (
+            <ColorBox key={color.name} name={color.name} color={color[colorFormat]} />
+          ))}
+        </PaletteColors>
+        {/* palette footer */}
+        <h6>
+          {emoji} - {name}
+        </h6>
+      </PaletteWrapper>
+      <Snackbar
+        open={snackbarOpened}
+        onClose={handleSnackbarClose}
+        autoHideDuration={500000}
+        message={<span id="message-id">Color Format Changed To {colorFormat.toUpperCase()}</span>}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        ContentProps={{
+          'aria-describedby': 'message-id',
+        }}
+        action={
+          <IconButton
+            key='close'
+            aria-label='close'
+            color='inherit'
+            onClick={handleSnackbarClose}
+          >
+            <CloseIcon />
+          </IconButton>
+        }
       />
-      {/* palette color boxes */}
-      <PaletteColors className="palette-colors">
-        {colors[currentLevel].map(color => (
-          <ColorBox key={color.name} name={color.name} color={color[colorFormat]} />
-        ))}
-      </PaletteColors>
-      {/* palette footer */}
-      <h6>
-        {emoji} - {name}
-      </h6>
-    </PaletteWrapper>
+    </>
   );
 }
 
