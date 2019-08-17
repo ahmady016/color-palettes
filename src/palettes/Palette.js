@@ -188,7 +188,7 @@ function Palette ({ name, emoji, colors }) {
       {/* palette color boxes */}
       <PaletteColors className="palette-colors">
         {colors[currentLevel].map(color => (
-          <ColorBox key={color.name} color={color[colorFormat]} />
+          <ColorBox key={color.name} name={color.name} color={color[colorFormat]} />
         ))}
       </PaletteColors>
       {/* palette footer */}
