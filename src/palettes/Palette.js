@@ -1,8 +1,15 @@
 import React from 'react'
 
-import styled from 'styled-components'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
+import styled from 'styled-components'
+
 import Button from '@material-ui/core/Button'
+import Select from '@material-ui/core/Select'
+import MenuItem from '@material-ui/core/MenuItem'
+import InputLabel from '@material-ui/core/InputLabel'
+
+import colorFormats from '../helpers/colorFormats'
+
 import Slider from 'rc-slider'
 import 'rc-slider/assets/index.css'
 import '../rc-slider.css'
@@ -15,6 +22,9 @@ const PaletteColors = styled.div`
   height: 100%;
   display: flex;
   flex-wrap: wrap;
+`
+const ColorFormatSelect = styled(Select)`
+  width: 15rem;
 `
 const ColorBoxInnerWrapper = styled.div`
   position: absolute;
@@ -102,10 +112,25 @@ const CopyMessageColor = styled.div`
 `
 //#endregion
 
-function PaletteHeader ({ paletteName, paletteEmoji, level, setLevel }) {
+function PaletteHeader ({ paletteName, paletteEmoji, level, setLevel, colorFormat, setColorFormat }) {
   return (
     <header className='flex-between px-1'>
     <h3>{paletteEmoji} {paletteName}</h3>
+    <div>
+      <InputLabel htmlFor='color-format'>Color Format</InputLabel>
+      <ColorFormatSelect
+        value={colorFormat}
+        onChange={e => setColorFormat(e.target.value)}
+        inputProps={{
+          id: 'color-format',
+          name: 'color-format'
+        }}
+      >
+        {colorFormats.map(({ value, text }) => (
+          <MenuItem value={value}>{value.toUpperCase()} - {text}</MenuItem>
+        ))}
+      </ColorFormatSelect>
+    </div>
     <div>
       <span>Level: {level}</span>
       <Slider
@@ -120,47 +145,50 @@ function PaletteHeader ({ paletteName, paletteEmoji, level, setLevel }) {
   )
 }
 
-function ColorBox ({ name, hex }) {
+function ColorBox ({ name, color }) {
   const [copied, setCopied] = React.useState(false)
   const doCopy = React.useCallback( () => {
     setCopied(true)
     setTimeout(() => setCopied(false), 1500)
   }, [])
   return (
-    <ColorBoxWrapper color={hex}>
+    <ColorBoxWrapper color={color}>
       <ColorBoxContent>
         <ColorName>{name}</ColorName>
         <ButtonMore size='small' variant='contained'>MORE</ButtonMore>
       </ColorBoxContent>
       <ColorBoxCopyWrapper>
-        <CopyToClipboard text={hex} onCopy={doCopy}>
+        <CopyToClipboard text={color} onCopy={doCopy}>
           <Button size='large' variant='contained'>COPY</Button>
         </CopyToClipboard>
       </ColorBoxCopyWrapper>
-      <CopyOverlay className={copied ? 'active' : ''} color={hex} />
+      <CopyOverlay className={copied ? 'active' : ''} color={color} />
       <CopyMessage className={copied ? 'active' : ''}>
         <CopyMessageText>Copied</CopyMessageText>
-        <CopyMessageColor>{hex}</CopyMessageColor>
+        <CopyMessageColor>{color}</CopyMessageColor>
       </CopyMessage>
     </ColorBoxWrapper>
   )
 }
 
-export default function Palette ({ name, emoji, colors }) {
+function Palette ({ name, emoji, colors }) {
   const [currentLevel, setCurrentLevel] = React.useState(500)
+  const [colorFormat, setColorFormat] = React.useState('hex')
   return (
     <PaletteWrapper className="palette">
       {/* palette header */}
       <PaletteHeader
-        level={currentLevel}
-        setLevel={setCurrentLevel}
         paletteName={name}
         paletteEmoji={emoji}
+        level={currentLevel}
+        setLevel={setCurrentLevel}
+        colorFormat={colorFormat}
+        setColorFormat={setColorFormat}
       />
       {/* palette color boxes */}
       <PaletteColors className="palette-colors">
         {colors[currentLevel].map(color => (
-          <ColorBox key={color.name} {...color} />
+          <ColorBox key={color.name} color={color[colorFormat]} />
         ))}
       </PaletteColors>
       {/* palette footer */}
@@ -170,3 +198,5 @@ export default function Palette ({ name, emoji, colors }) {
     </PaletteWrapper>
   );
 }
+
+export default Palette
