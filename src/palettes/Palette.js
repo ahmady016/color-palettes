@@ -102,6 +102,24 @@ const CopyMessageColor = styled.div`
 `
 //#endregion
 
+function PaletteHeader ({ paletteName, paletteEmoji, level, setLevel }) {
+  return (
+    <header className='flex-between px-1'>
+    <h3>{paletteEmoji} {paletteName}</h3>
+    <div>
+      <span>Level: {level}</span>
+      <Slider
+        defaultValue={level}
+        step={100}
+        min={100}
+        max={900}
+        onAfterChange={setLevel}
+      />
+    </div>
+  </header>
+  )
+}
+
 function ColorBox ({ name, hex }) {
   const [copied, setCopied] = React.useState(false)
   const doCopy = React.useCallback( () => {
@@ -131,27 +149,24 @@ function ColorBox ({ name, hex }) {
 export default function Palette ({ name, emoji, colors }) {
   const [currentLevel, setCurrentLevel] = React.useState(500)
   return (
-    <PaletteWrapper className='palette'>
+    <PaletteWrapper className="palette">
       {/* palette header */}
-      <div className='flex-between px-1'>
-        <h3>{emoji} {name}</h3>
-        <div>
-          <span>Level: {currentLevel}</span>
-          <Slider
-            defaultValue={currentLevel}
-            step={100}
-            min={100}
-            max={900}
-            onAfterChange={setCurrentLevel}
-          />
-        </div>
-      </div>
+      <PaletteHeader
+        level={currentLevel}
+        setLevel={setCurrentLevel}
+        paletteName={name}
+        paletteEmoji={emoji}
+      />
       {/* palette color boxes */}
-      <PaletteColors className='palette-colors'>
-        {colors[currentLevel].map( color => ( <ColorBox key={color.name} {...color} /> ) )}
+      <PaletteColors className="palette-colors">
+        {colors[currentLevel].map(color => (
+          <ColorBox key={color.name} {...color} />
+        ))}
       </PaletteColors>
       {/* palette footer */}
-      <h6>{emoji} - {name}</h6>
+      <h6>
+        {emoji} - {name}
+      </h6>
     </PaletteWrapper>
-  )
+  );
 }
