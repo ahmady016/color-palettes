@@ -24,6 +24,14 @@ const PaletteListTitle = styled.h1`
     margin-right: 0.5rem;
   }
 `
+const PaletteListItems = styled.div`
+  width: 90%;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+`
 const ColorBoxesWrapper = styled(CardContent)`
   width: 90%;
   height: 10rem;
@@ -45,6 +53,25 @@ const PaletteName = styled.span`
 
 const ColorBox = ({ color }) => <ColorBoxWrapper color={color} />
 
+function PaletteCard({ id, name, emoji, colors }) {
+  return (
+    <Card className='flex-b-30 m-05'>
+      <Link className='default-link' to={`/palette/${id}`}>
+        <CardActionArea>
+          <ColorBoxesWrapper>
+            {colors.map(({name, color}) => <ColorBox key={name} color={color} />)}
+          </ColorBoxesWrapper>
+          <Divider />
+          <CardActions className='flex-between'>
+            <PaletteName>{name}</PaletteName>
+            <Avatar><span>{emoji}</span></Avatar>
+          </CardActions>
+        </CardActionArea>
+      </Link>
+    </Card>
+  )
+}
+
 export default function PaletteList({ palettes }) {
   return (
     <PaletteListWrapper>
@@ -52,24 +79,9 @@ export default function PaletteList({ palettes }) {
         <span>🎨</span>
         <span>Palette List</span>
       </PaletteListTitle>
-      <div className='flex-center flex-wrap w-90 m-auto'>
-          {palettes.map(({ id, name, emoji, colors }) => (
-            <Card key={id} className='flex-b-30 m-05'>
-              <Link className='default-link' to={`/palette/${id}`}>
-                <CardActionArea>
-                  <ColorBoxesWrapper>
-                    {colors.map(({name, color}) => <ColorBox key={name} color={color} />)}
-                  </ColorBoxesWrapper>
-                  <Divider />
-                  <CardActions className='flex-between'>
-                    <PaletteName>{name}</PaletteName>
-                    <Avatar><span>{emoji}</span></Avatar>
-                  </CardActions>
-                </CardActionArea>
-              </Link>
-            </Card>
-          ))}
-      </div>
+      <PaletteListItems>
+        {palettes.map(palette => <PaletteCard key={palette.id} {...palette} />)}
+      </PaletteListItems>
     </PaletteListWrapper>
   )
 }

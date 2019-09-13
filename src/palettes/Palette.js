@@ -21,6 +21,9 @@ import '../rc-slider.css'
 const PaletteWrapper = styled.div`
   height: 100%;
 `
+const PaletteHeaderWrapper = styled.div`
+  background-color: #d1d1d1;
+`
 const PaletteColors = styled.div`
   height: 100%;
   display: flex;
@@ -132,7 +135,7 @@ const PaletteFooter = styled.footer`
 
 function PaletteHeader ({ paletteName, paletteEmoji, level, setLevel, colorFormat, setColorFormat }) {
   return (
-    <header className='flex-between px-1'>
+    <PaletteHeaderWrapper className='flex-between px-1'>
       <h3>{paletteEmoji} {paletteName}</h3>
       <div>
         <InputLabel htmlFor='color-format'>Color Format</InputLabel>
@@ -159,7 +162,7 @@ function PaletteHeader ({ paletteName, paletteEmoji, level, setLevel, colorForma
           onAfterChange={setLevel}
         />
       </div>
-    </header>
+    </PaletteHeaderWrapper>
   )
 }
 
