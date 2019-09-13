@@ -13,7 +13,7 @@ const currentPalette = {
 
 function App () {
   return (
-    <div className='container h-75'>
+    <div className='container'>
       <Palette {...currentPalette} />
     </div>
   )

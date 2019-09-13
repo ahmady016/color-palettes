@@ -58,7 +58,7 @@ const ColorBoxWrapper = styled.div`
   cursor: pointer;
   background-color: ${({ color }) => color};
   flex-basis: 25%;
-  height: 40%;
+  height: 10rem;
   &:hover ${ColorBoxCopyWrapper} {
     opacity: 1;
     transition: opacity 0.5s ease-out;
@@ -112,6 +112,21 @@ const CopyMessageText = styled.div`
 const CopyMessageColor = styled.div`
   font-size: 1.5rem;
   font-weight: 200;
+`
+const PaletteFooter = styled.footer`
+  height: 10vh;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  background-color: #ddd;
+  color: #444;
+  font-weight: 600;
+  margin-top: 0.1rem;
+  box-shadow: 1px 1px 10px #151515;
+  & > .emoji {
+    font-size: 1.5rem;
+    margin-left: 0.5rem;
+  }
 `
 //#endregion
 
@@ -209,9 +224,10 @@ function Palette ({ name, emoji, colors }) {
           ))}
         </PaletteColors>
         {/* palette footer */}
-        <h6>
-          {emoji} - {name}
-        </h6>
+        <PaletteFooter className='palette-footer'>
+          <span>{name}</span>
+          <span className='emoji'>{emoji}</span>
+        </PaletteFooter>
       </PaletteWrapper>
       <Snackbar
         open={snackbarOpened}
