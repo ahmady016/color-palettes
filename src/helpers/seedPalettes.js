@@ -52,7 +52,7 @@ export default {
   },
   "flat-ui-colors-dutch": {
     name: "Flat UI Colors Dutch",
-    emoji: "🇳🇱",
+    emoji: "🏴󠁧󠁢󠁷󠁬󠁳󠁿",
     colors: [
       { name: "Sunflower", color: "#FFC312" },
       { name: "Energos", color: "#C4E538" },
@@ -78,7 +78,7 @@ export default {
   },
   "flat-ui-colors-american": {
     name: "Flat UI Colors American",
-    emoji: "🇺🇸",
+    emoji: "🏴󠁧󠁢󠁷󠁬󠁳󠁿",
     colors: [
       { name: "LightGreenishBlue", color: "#55efc4" },
       { name: "FadedPoster", color: "#81ecec" },
@@ -104,7 +104,7 @@ export default {
   },
   "flat-ui-colors-aussie": {
     name: "Flat UI Colors Aussie",
-    emoji: "🇦🇺",
+    emoji: "🏴󠁧󠁢󠁷󠁬󠁳󠁿",
     colors: [
       { name: "Beekeeper", color: "#f6e58d" },
       { name: "SpicedNectarine", color: "#ffbe76" },
@@ -130,7 +130,7 @@ export default {
   },
   "flat-ui-colors-british": {
     name: "Flat UI Colors British",
-    emoji: "🇬🇧",
+    emoji: "🏴󠁧󠁢󠁷󠁬󠁳󠁿",
     colors: [
       { name: "ProtossPylon", color: "#00a8ff" },
       { name: "Periwinkle", color: "#9c88ff" },
@@ -156,7 +156,7 @@ export default {
   },
   "flat-ui-colors-spanish": {
     name: "Flat UI Colors Spanish",
-    emoji: "🇪🇸",
+    emoji: "🏴󠁧󠁢󠁷󠁬󠁳󠁿",
     colors: [
       { name: "JacksonsPurple", color: "#40407a" },
       { name: "C64Purple", color: "#706fd3" },
@@ -208,7 +208,7 @@ export default {
   },
   "flat-ui-colors-french": {
     name: "Flat UI Colors French",
-    emoji: "🇫🇷",
+    emoji: "🏴󠁧󠁢󠁷󠁬󠁳󠁿",
     colors: [
       { name: "FlatFlesh", color: "#fad390" },
       { name: "MelonMelody", color: "#f8c291" },

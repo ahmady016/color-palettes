@@ -21,6 +21,9 @@ code {
 .flex {
   display: flex;
 }
+.flex-wrap {
+  flex-wrap: wrap;
+}
 .flex-center {
   display: flex;
   justify-content: center;
@@ -178,11 +181,23 @@ code {
 .p-3 {
   padding: 3rem !important;
 }
-m-auto {
+.m-auto {
   margin: 0 auto !important;
 }
 .m-0 {
   margin: 0 !important;
+}
+.m-05 {
+  margin: 0.5rem !important;
+}
+.m-1 {
+  margin: 1rem !important;
+}
+.m-2 {
+  margin: 2rem !important;
+}
+.m-3 {
+  margin: 3rem !important;
 }
 .mt-1 {
   margin-top: 1rem !important;
@@ -333,6 +348,14 @@ m-auto {
 a.default-link {
   color: inherit;
   text-decoration: none;
+}
+div.bg-blue {
+  background-color: #0057e7;
+  color: #fff;
+}
+div.bg-yellow {
+  background-color: #fffc00;
+  color: #444;
 }
 /* #endregion */
 
