@@ -12,7 +12,7 @@ function App () {
       <BrowserRouter>
         <Switch>
           <Route path='/palette-list' render={() => <PaletteList palettes={getPaletteList()} />} />
-          <Route path='/palette/:id' render={props => <Palette {...getPalette(props.match.params.id, true)} />} />
+          <Route path='/palette/:id' render={props => <Palette history={props.history} {...getPalette(props.match.params.id, true)} />} />
           <Redirect to='/palette-list' />
         </Switch>
       </BrowserRouter>
