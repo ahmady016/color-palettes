@@ -178,6 +178,9 @@ code {
 .p-3 {
   padding: 3rem !important;
 }
+m-auto {
+  margin: 0 auto !important;
+}
 .m-0 {
   margin: 0 !important;
 }
@@ -326,6 +329,10 @@ code {
   line-height: 1.8rem;
   font-size: 1.2rem;
   text-align: justify;
+}
+a.default-link {
+  color: inherit;
+  text-decoration: none;
 }
 /* #endregion */
 
