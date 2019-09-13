@@ -4,16 +4,7 @@ import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 import PaletteList from './palettes/PaletteList'
 import Palette from './palettes/Palette'
 
-import seedPalettes from './helpers/seedPalettes'
-import getColorsLevels from './helpers/colorLevels'
-
-const getPalette = (paletteId = 'flat-ui-colors-indian', genColors = false) => ({
-  ...seedPalettes[paletteId],
-  id: paletteId,
-  colors: genColors ? getColorsLevels(seedPalettes[paletteId].colors) : seedPalettes[paletteId].colors
-})
-
-const getPaletteList = () => Object.keys(seedPalettes).map(key => getPalette(key))
+import { getPaletteList, getPalette } from './helpers/seedPalettes'
 
 function App () {
   return (

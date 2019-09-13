@@ -1,4 +1,6 @@
-export default {
+import getColorsLevels from './colorLevels'
+
+export const seedPalettes = {
   "material-ui-colors": {
     name: "Material UI Colors",
     emoji: "🎨",
@@ -233,3 +235,11 @@ export default {
     ]
   }
 }
+
+export const getPalette = (paletteId = 'flat-ui-colors-indian', genColors = false) => ({
+  ...seedPalettes[paletteId],
+  id: paletteId,
+  colors: genColors ? getColorsLevels(seedPalettes[paletteId].colors) : seedPalettes[paletteId].colors
+})
+
+export const getPaletteList = () => Object.keys(seedPalettes).map(key => getPalette(key))
