@@ -1,4 +1,4 @@
-import getColorsLevels from './colorLevels'
+import getColorsLevels, { getColorLevels } from './colorLevels'
 
 export const seedPalettes = {
   "material-ui-colors": {
@@ -236,10 +236,19 @@ export const seedPalettes = {
   }
 }
 
-export const getPalette = (paletteId = 'flat-ui-colors-indian', genColors = false) => ({
+export const getPaletteColors = (paletteId = 'flat-ui-colors-indian', genLevels = false) => ({
   ...seedPalettes[paletteId],
   id: paletteId,
-  colors: genColors ? getColorsLevels(seedPalettes[paletteId].colors) : seedPalettes[paletteId].colors
+  colors: genLevels ? getColorsLevels(seedPalettes[paletteId].colors) : seedPalettes[paletteId].colors
 })
 
-export const getPaletteList = () => Object.keys(seedPalettes).map(key => getPalette(key))
+export const getPaletteList = () => Object.keys(seedPalettes).map(key => getPaletteColors(key))
+
+export const getPaletteColor = (paletteId = 'flat-ui-colors-indian', colorId = 'orchidorange') => {
+  let colorInfo = seedPalettes[paletteId].colors.find(color => color.name.toLowerCase().replace(/ /g, '-') === colorId)
+  return {
+    ...seedPalettes[paletteId],
+    id: paletteId,
+    colors: (colorInfo) ? getColorLevels(colorInfo.name, colorInfo.color) : []
+  }
+}

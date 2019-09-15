@@ -21,6 +21,22 @@ function getScale (hexColor, colorsCount) {
     .reverse()
 }
 
+function getColorInfo(colorName, colorHex, index) {
+  return {
+    id: colorName.toLowerCase().replace(/ /g, '-'),
+    name: `${colorName} ${levels[index]}`,
+    hex: colorHex,
+    rgb: chroma(colorHex).css(),
+    rgba: chroma(colorHex).css().replace('rgb', 'rgba').replace(')',',1.0)')
+  }
+}
+
+export const getColorLevels = (colorName, hexColor) => {
+  return getScale(hexColor, levels.length)
+          .map((scale, i) => getColorInfo(colorName, scale, i))
+          .slice(1)
+}
+
 export default function getColorsLevels (baseColors) {
   let colors = {}
 
@@ -29,15 +45,7 @@ export default function getColorsLevels (baseColors) {
 
   for (const color of baseColors) {
     newScale = getScale(color.color, levels.length)
-    newScale.forEach( (scale, i) => {
-      colors[levels[i]].push({
-        id: color.name.toLowerCase().replace(/ /g, '-'),
-        name: `${color.name} ${levels[i]}`,
-        hex: scale,
-        rgb: chroma(scale).css(),
-        rgba: chroma(scale).css().replace('rgb', 'rgba').replace(')',',1.0)')
-      })
-    })
+    newScale.forEach( (scale, i) => colors[levels[i]].push(getColorInfo(color.name, scale, i)) )
   }
 
   return colors

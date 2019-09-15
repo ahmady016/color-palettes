@@ -59,7 +59,9 @@ function PaletteCard({ id, name, emoji, colors, history }) {
     <Card className='flex-b-30 m-05'>
       <CardActionArea onClick={goToPalette(id, history)}>
         <ColorBoxesWrapper>
-          {colors.map(({name, color}) => <ColorBox key={name} color={color} />)}
+          {colors.map(({name, color}) =>
+            <ColorBox key={name} color={color} />
+          )}
         </ColorBoxesWrapper>
         <Divider />
         <CardActions className='flex-between'>
@@ -79,7 +81,9 @@ export default function PaletteList({ palettes, history }) {
         <span>Palette List</span>
       </PaletteListTitle>
       <PaletteListItems>
-        {palettes.map(palette => <PaletteCard key={palette.id} history={history} {...palette} />)}
+        {palettes.map(palette =>
+          <PaletteCard key={palette.id} history={history} {...palette} />
+        )}
       </PaletteListItems>
     </PaletteListWrapper>
   )

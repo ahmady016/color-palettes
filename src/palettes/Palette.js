@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import styled from 'styled-components'
@@ -10,6 +11,7 @@ import InputLabel from '@material-ui/core/InputLabel'
 import Snackbar from '@material-ui/core/Snackbar'
 import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
+import Icon from '@material-ui/core/Icon'
 
 import colorFormats from '../helpers/colorFormats'
 
@@ -34,15 +36,15 @@ const ColorFormatSelect = styled(Select)`
 `
 const ColorBoxInnerWrapper = styled.div`
   position: absolute;
-  z-index: 1;
   width: 100%;
-  height: 100%;
   display: flex;
   font-size: 0.8rem;
 `
 const ColorBoxContent = styled(ColorBoxInnerWrapper)`
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
+  z-index: 2;
+  bottom: 0;
 `
 const ColorName = styled.div`
   text-transform: uppercase;
@@ -51,17 +53,18 @@ const ButtonMore = styled(Button)`
   border-radius: 0 !important;
 `
 const ColorBoxCopyWrapper = styled(ColorBoxInnerWrapper)`
+  height: 100%;
   flex-basis: 40%;
   justify-content: center;
   align-items: center;
   opacity: 0;
+  z-index: 1;
 `
 const ColorBoxWrapper = styled.div`
   position: relative;
-  cursor: pointer;
-  background-color: ${({ color }) => color};
-  flex-basis: 25%;
-  height: 10rem;
+  background-color: ${ ({ color }) => color };
+  flex-basis: ${ ({ isOneColor }) => isOneColor ? '20%' : '25%' };
+  height: ${ ({ isOneColor }) => isOneColor ? '15rem' : '10rem' };
   &:hover ${ColorBoxCopyWrapper} {
     opacity: 1;
     transition: opacity 0.5s ease-out;
@@ -133,10 +136,10 @@ const PaletteFooter = styled.footer`
 `
 //#endregion
 
-function PaletteHeader ({ paletteName, paletteEmoji, level, setLevel, colorFormat, setColorFormat }) {
+function PaletteHeader ({ paletteName, paletteEmoji, level, setLevel, colorFormat, setColorFormat, colorName }) {
   return (
     <PaletteHeaderWrapper className='flex-between px-1'>
-      <h3>{paletteEmoji} {paletteName}</h3>
+      <h3>{paletteEmoji} {paletteName} - {colorName}</h3>
       <div>
         <InputLabel htmlFor='color-format'>Color Format</InputLabel>
         <ColorFormatSelect
@@ -152,21 +155,23 @@ function PaletteHeader ({ paletteName, paletteEmoji, level, setLevel, colorForma
           ))}
         </ColorFormatSelect>
       </div>
-      <div>
-        <span>Level: {level}</span>
-        <Slider
-          defaultValue={level}
-          step={100}
-          min={100}
-          max={900}
-          onAfterChange={setLevel}
-        />
-      </div>
+      { !colorName &&
+        <div>
+          <span>Level: {level}</span>
+          <Slider
+            defaultValue={level}
+            step={100}
+            min={100}
+            max={900}
+            onAfterChange={setLevel}
+          />
+        </div>
+      }
     </PaletteHeaderWrapper>
   )
 }
 
-function ColorBox ({ name, color }) {
+function ColorBox ({ paletteId, colorId, name, color, isOneColor }) {
   const [copied, setCopied] = React.useState(false)
   const doCopy = React.useCallback( () => {
     setCopied(true)
@@ -174,10 +179,14 @@ function ColorBox ({ name, color }) {
   }, [])
 
   return (
-    <ColorBoxWrapper color={color}>
+    <ColorBoxWrapper color={color} isOneColor={isOneColor}>
       <ColorBoxContent>
         <ColorName>{name}</ColorName>
-        <ButtonMore size='small' variant='contained'>MORE</ButtonMore>
+        { !isOneColor &&
+          <ButtonMore size='small' variant='contained'>
+            <Link className='default-link' to={`/palette/${paletteId}/${colorId}`}>MORE</Link>
+          </ButtonMore>
+        }
       </ColorBoxContent>
       <ColorBoxCopyWrapper>
         <CopyToClipboard text={color} onCopy={doCopy}>
@@ -193,7 +202,9 @@ function ColorBox ({ name, color }) {
   )
 }
 
-function Palette ({ name, emoji, colors }) {
+function Palette ({ id, name, emoji, colors, history }) {
+  console.log("TCL: Palette -> colors", colors)
+  const isOneColor = Array.isArray(colors)
   const [currentLevel, setCurrentLevel] = React.useState(500)
   const [colorFormat, setColorFormat] = React.useState('hex')
   const [snackbarOpened, setSnackbarOpened] = React.useState(false)
@@ -219,13 +230,29 @@ function Palette ({ name, emoji, colors }) {
           setLevel={setCurrentLevel}
           colorFormat={colorFormat}
           setColorFormat={handleColorFormatChange}
+          colorName={isOneColor ? colors[0].name.split(' ')[0] : ''}
         />
         {/* palette color boxes */}
-        <PaletteColors className='palette-colors'>
-          {colors[currentLevel].map(color => (
-            <ColorBox key={color.name} name={color.name} color={color[colorFormat]} />
-          ))}
-        </PaletteColors>
+        {isOneColor
+          ? <PaletteColors className='palette-colors'>
+              {[
+                ...colors.map(color =>
+                  <ColorBox key={color.name} isOneColor={isOneColor} paletteId={id} colorId={color.id} name={color.name} color={color[colorFormat]} />
+                ),
+                <ColorBoxWrapper className='flex-center' key='go-back' isOneColor={isOneColor}>
+                  <Button size='large' color='primary' variant='contained' onClick={e => history.goBack()}>
+                    <Icon className='mr-05'>arrow_back</Icon>
+                    <span>GO BACK</span>
+                  </Button>
+                </ColorBoxWrapper>
+              ]}
+            </PaletteColors>
+          : <PaletteColors className='palette-colors'>
+              {colors[currentLevel].map(color =>
+                <ColorBox key={color.name} isOneColor={isOneColor} paletteId={id} colorId={color.id} name={color.name} color={color[colorFormat]} />
+              )}
+            </PaletteColors>
+        }
         {/* palette footer */}
         <PaletteFooter className='palette-footer'>
           <span>{name}</span>
