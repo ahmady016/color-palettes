@@ -25,7 +25,17 @@ const PaletteWrapper = styled.div`
   height: 100%;
 `
 const PaletteHeaderWrapper = styled.div`
+  height: 60px;
+  margin-bottom: 0.4rem;
+  padding-right: 1rem;
+  box-shadow: 1px 1px 10px #151515;
   background-color: #d1d1d1;
+  color: #444;
+  font-weight: 600;
+`
+const HomeButton = styled(Button)`
+  height: 100%;
+  border-radius: 0 !important;
 `
 const PaletteColors = styled.div`
   height: 100%;
@@ -130,7 +140,7 @@ const PaletteFooter = styled.footer`
   background-color: #ddd;
   color: #444;
   font-weight: 600;
-  margin-top: 0.1rem;
+  margin-top: 0.3rem;
   box-shadow: 1px 1px 10px #151515;
   & > .emoji {
     font-size: 1.5rem;
@@ -141,8 +151,12 @@ const PaletteFooter = styled.footer`
 
 function PaletteHeader ({ paletteName, paletteEmoji, level, setLevel, colorFormat, setColorFormat, colorName }) {
   return (
-    <PaletteHeaderWrapper className='flex-between px-1'>
-      <h3>{paletteEmoji} {paletteName} - {colorName}</h3>
+    <PaletteHeaderWrapper className='flex-between'>
+      <HomeButton size='large' variant='contained'>
+        <Icon className='mr-05'>home</Icon>
+        <Link className='default-link' to='/palette-list/'>Palette List</Link>
+      </HomeButton>
+      <h3>{paletteEmoji} {paletteName} {colorName && `- ${colorName}`}</h3>
       <div>
         <InputLabel htmlFor='color-format'>Color Format</InputLabel>
         <ColorFormatSelect
