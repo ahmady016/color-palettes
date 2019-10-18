@@ -73,7 +73,7 @@ function PaletteCard({ id, name, emoji, colors, history }) {
   )
 }
 
-export default function PaletteList({ palettes, history }) {
+function PaletteList({ palettes, history }) {
   return (
     <PaletteListWrapper>
       <PaletteListTitle>
@@ -88,3 +88,5 @@ export default function PaletteList({ palettes, history }) {
     </PaletteListWrapper>
   )
 }
+
+export default PaletteList

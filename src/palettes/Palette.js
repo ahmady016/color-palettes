@@ -14,6 +14,7 @@ import CloseIcon from '@material-ui/icons/Close'
 import Icon from '@material-ui/core/Icon'
 
 import colorFormats from '../helpers/colorFormats'
+import { isDarkColor, isLightColor } from '../helpers/colorLevels'
 
 import Slider from 'rc-slider'
 import 'rc-slider/assets/index.css'
@@ -48,6 +49,8 @@ const ColorBoxContent = styled(ColorBoxInnerWrapper)`
 `
 const ColorName = styled.div`
   text-transform: uppercase;
+  margin-left: 0.5rem;
+  color: ${({ isDarkColor }) => isDarkColor ? '#fff' : '#000'};
 `
 const ButtonMore = styled(Button)`
   border-radius: 0 !important;
@@ -95,10 +98,10 @@ const CopyMessage = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 4rem;
-  color: #fff;
   opacity: 0;
-  transform: scale(0.1);
+  transform: scale(0);
   z-index: 999;
+  color: ${({ isLightColor }) => isLightColor ? '#000' : '#fff'};
   &.active {
     opacity: 1;
     transform: scale(1);
@@ -109,9 +112,9 @@ const CopyMessageText = styled.div`
   width: 100%;
   padding: 1rem;
   margin-bottom: 1rem;
-  background-color: rgba(255,255,255,0.2);
+  background-color: ${({ isLightColor }) => isLightColor ? 'rgba(0,0,0,0.4)' : 'rgba(255,255,255,0.2)'};
   font-weight: 400;
-  text-shadow: 1px 2px #000;
+  text-shadow: 1px 2px ${({ isLightColor }) => isLightColor ? '#fff' : '#000'};
   text-align: center;
   text-transform: uppercase;
 `
@@ -172,7 +175,11 @@ function PaletteHeader ({ paletteName, paletteEmoji, level, setLevel, colorForma
 }
 
 function ColorBox ({ paletteId, colorId, name, color, isOneColor }) {
+  const _isLightColor = isLightColor(color)
+  const _isDarkColor = isDarkColor(color)
+
   const [copied, setCopied] = React.useState(false)
+
   const doCopy = React.useCallback( () => {
     setCopied(true)
     setTimeout(() => setCopied(false), 1500)
@@ -181,7 +188,7 @@ function ColorBox ({ paletteId, colorId, name, color, isOneColor }) {
   return (
     <ColorBoxWrapper color={color} isOneColor={isOneColor}>
       <ColorBoxContent>
-        <ColorName>{name}</ColorName>
+        <ColorName isDarkColor={_isDarkColor}>{name}</ColorName>
         { !isOneColor &&
           <ButtonMore size='small' variant='contained'>
             <Link className='default-link' to={`/palette/${paletteId}/${colorId}`}>MORE</Link>
@@ -194,8 +201,8 @@ function ColorBox ({ paletteId, colorId, name, color, isOneColor }) {
         </CopyToClipboard>
       </ColorBoxCopyWrapper>
       <CopyOverlay className={copied ? 'active' : ''} color={color} />
-      <CopyMessage className={copied ? 'active' : ''}>
-        <CopyMessageText>Copied</CopyMessageText>
+      <CopyMessage className={copied ? 'active' : ''} isLightColor={_isLightColor}>
+        <CopyMessageText isLightColor={_isLightColor}>Copied</CopyMessageText>
         <CopyMessageColor>{color}</CopyMessageColor>
       </CopyMessage>
     </ColorBoxWrapper>

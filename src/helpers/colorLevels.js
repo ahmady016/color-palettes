@@ -31,6 +31,9 @@ function getColorInfo(colorName, colorHex, index) {
   }
 }
 
+export const isDarkColor = (hex) => chroma(hex).luminance() <= 0.08
+export const isLightColor = (hex) => chroma(hex).luminance() >= 0.6
+
 export const getColorLevels = (colorName, hexColor) => {
   return getScale(hexColor, levels.length)
           .map((scale, i) => getColorInfo(colorName, scale, i))
