@@ -33,6 +33,9 @@ const PaletteHeaderWrapper = styled.div`
   color: #444;
   font-weight: 600;
 `
+const HomeLink = styled(Link)`
+  height: 100%;
+`
 const HomeButton = styled(Button)`
   height: 100%;
   border-radius: 0 !important;
@@ -152,10 +155,12 @@ const PaletteFooter = styled.footer`
 function PaletteHeader ({ paletteName, paletteEmoji, level, setLevel, colorFormat, setColorFormat, colorName }) {
   return (
     <PaletteHeaderWrapper className='flex-between'>
-      <HomeButton size='large' variant='contained'>
-        <Icon className='mr-05'>home</Icon>
-        <Link className='default-link' to='/palette-list/'>Palette List</Link>
-      </HomeButton>
+        <HomeLink className='default-link' to='/palette-list/'>
+          <HomeButton size='large' variant='contained'>
+            <Icon className='mr-05'>home</Icon>
+            Palette List
+          </HomeButton>
+        </HomeLink>
       <h3>{paletteEmoji} {paletteName} {colorName && `- ${colorName}`}</h3>
       <div>
         <InputLabel htmlFor='color-format'>Color Format</InputLabel>
