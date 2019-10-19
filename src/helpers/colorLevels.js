@@ -33,6 +33,15 @@ function getColorInfo(colorName, colorHex, index) {
 
 export const isDarkColor = (hex) => chroma(hex).luminance() <= 0.08
 export const isLightColor = (hex) => chroma(hex).luminance() >= 0.6
+export const getColorName = (hex) => chroma(hex).name()
+
+export const getRandomColor = () => {
+  const baseChars = '0123456789abcdef'
+  let result = '#'
+  for (var i = 0; i < 6; i++)
+    result += baseChars.charAt(Math.floor(Math.random() * 16))
+  return result
+}
 
 export const getColorLevels = (colorName, hexColor) => {
   return getScale(hexColor, levels.length)
