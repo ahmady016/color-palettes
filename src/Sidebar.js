@@ -49,9 +49,9 @@ const useStyles = makeStyles(theme => ({
   drawerHeader: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between',
     padding: theme.spacing(0, 1),
     ...theme.mixins.toolbar,
+    justifyContent: 'space-between',
   },
   content: {
     flexGrow: 1,
@@ -60,7 +60,7 @@ const useStyles = makeStyles(theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    marginLeft: -drawerWidth,
+    marginLeft: `-${drawerWidth}%`,
   },
   contentShift: {
     transition: theme.transitions.create('margin', {
@@ -74,9 +74,11 @@ const useStyles = makeStyles(theme => ({
 
 //#region styled components
 const OpenButton = styled(Button)`
+  flex-basis: 20%;
   border-radius: 0 !important;
 `
 const HeaderToolbar = styled(Toolbar)`
+  justify-content: space-between;
   padding: 0 !important;
 `
 //#endregion
@@ -108,6 +110,7 @@ function Sidebar({ HeaderSection, SidebarSection, MainSection }) {
             Add Colors
           </OpenButton>
           {/* header content placeholder */}
+          <HeaderSection />
         </HeaderToolbar>
       </AppBar>
       {/* Drawer (sidebar) */}
@@ -126,11 +129,13 @@ function Sidebar({ HeaderSection, SidebarSection, MainSection }) {
         </div>
         <Divider />
         {/* sidebar content placeholder */}
+        <SidebarSection />
       </Drawer>
       {/* Main */}
-      <main className={clsx(classes.content,  opened && classes.contentShift)}>
+      <main className={clsx(classes.content, opened && classes.contentShift)}>
         <div className={classes.drawerHeader} />
         {/* main content placeholder */}
+        <MainSection />
       </main>
     </div>
   )

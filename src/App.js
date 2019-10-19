@@ -5,7 +5,7 @@ import PaletteList from './palettes/PaletteList'
 import Palette from './palettes/Palette'
 
 import { getPaletteList, getPaletteColors, getPaletteColor } from './helpers/seedPalettes'
-import Sidebar from './Sidebar'
+import NewPalette from './palettes/NewPalette'
 
 function App () {
   return (
@@ -15,7 +15,7 @@ function App () {
           <Route path='/palette-list'
             render={props => <PaletteList {...props} palettes={getPaletteList()} />} />
           <Route path='/palette/new'
-            render={props => <Sidebar {...props} /> } />
+            render={props => <NewPalette {...props} /> } />
           <Route path='/palette/:id/:colorId'
             render={props => <Palette {...props} {...getPaletteColor(props.match.params.id, props.match.params.colorId)} />} />
           <Route path='/palette/:id'
