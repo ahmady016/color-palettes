@@ -96,6 +96,9 @@ code {
 .flex-b-40 {
   flex-basis: 40%;
 }
+.flex-b-45 {
+  flex-basis: 45%;
+}
 .flex-b-60 {
   flex-basis: 60%;
 }

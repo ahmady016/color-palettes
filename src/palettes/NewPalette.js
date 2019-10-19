@@ -19,8 +19,9 @@ const _initialColors = [
 
 //#region styled components
 const AddColorButton = styled(Button)`
-  width: 100%;
+  flex-basis: 100%;
   border-radius: 0 !important;
+  margin-top: 0.3rem !important;
   background-color: ${ ({ bgColor }) => bgColor } !important;
   color: ${ ({ bgColor }) => isDarkColor(bgColor) ? '#fff' : '#000' } !important;
 `
@@ -47,16 +48,17 @@ function NewPaletteForm() {
 }
 
 function AddColorForm({ selectedColor, setSelectedColor, colors, setColors }) {
-  const [colorName, setColorName] = React.useState(selectedColor.name)
   const paletteFilled = colors.length === 20
-  const addNewColor = _ =>
-    !paletteFilled
-      ? setColors( prevColors => [...prevColors, { name: colorName, value: selectedColor.value }] )
-      : null
+  const [colorName, setColorName] = React.useState(selectedColor.name)
+
   const onColorPicked = newColor => {
     let _colorName = getColorName(newColor.hex)
     setColorName(_colorName)
     setSelectedColor({ name: _colorName, value: newColor.hex })
+  }
+  const addNewColor = _ => {
+    if(!paletteFilled)
+      setColors( prevColors => [...prevColors, { name: colorName, value: selectedColor.value }] )
   }
 
   React.useEffect(
@@ -67,7 +69,7 @@ function AddColorForm({ selectedColor, setSelectedColor, colors, setColors }) {
       )
       ValidatorForm.addValidationRule(
         'isNewValue',
-        value => colors.every( (color) => color.value !== value)
+        value => colors.every( color => color.value !== value)
       )
     },
     [colors]
@@ -90,12 +92,12 @@ function AddColorForm({ selectedColor, setSelectedColor, colors, setColors }) {
         onChangeComplete={onColorPicked}
       />
       <ValidatorForm
-        className='w-80'
+        className='w-80 flex-between flex-wrap'
         onSubmit={addNewColor}
         onError={console.log}
       >
         <TextValidator
-          className='w-50'
+          className='flex-b-45'
           label='Color Value'
           name='colorValue'
           value={selectedColor.value}
@@ -104,7 +106,7 @@ function AddColorForm({ selectedColor, setSelectedColor, colors, setColors }) {
           readOnly
         />
         <TextValidator
-          className='w-50'
+          className='flex-b-45'
           label='Color Name'
           name='colorName'
           value={colorName}
