@@ -6,6 +6,7 @@ import clsx from 'clsx'
 import { makeStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar'
+import Typography from '@material-ui/core/Typography'
 import Drawer from '@material-ui/core/Drawer'
 import Divider from '@material-ui/core/Divider'
 import Button from '@material-ui/core/Button'
@@ -14,7 +15,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import MenuIcon from '@material-ui/icons/Menu'
 
 //#region material-ui styles
-const drawerWidth = 35
+const drawerWidth = 30
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
@@ -55,7 +56,6 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -83,21 +83,22 @@ const HeaderToolbar = styled(Toolbar)`
 `
 //#endregion
 
-function Sidebar({ HeaderSection, SidebarSection, MainSection }) {
+function Sidebar({ renderHeaderSection, renderSidebarSection, renderMainSection, sidebarTitle, sidebarButtonText }) {
   const classes = useStyles()
-  const [opened, setOpened] = React.useState(false)
+  const [opened, setOpened] = React.useState(true)
 
   return (
     <div className={classes.root}>
       {/* AppBar (header) */}
       <AppBar
-        position="fixed"
+        color='default'
+        position='fixed'
         className={clsx(classes.appBar, opened && classes.appBarShift)}
       >
         <HeaderToolbar>
           <OpenButton size='large'
             variant='contained'
-            color='primary'
+            color='default'
             onClick={e => setOpened(true)}>
             <IconButton
               color="inherit"
@@ -107,10 +108,10 @@ function Sidebar({ HeaderSection, SidebarSection, MainSection }) {
             >
               <MenuIcon />
             </IconButton>
-            Add Colors
+            {sidebarButtonText}
           </OpenButton>
           {/* header content placeholder */}
-          <HeaderSection />
+          {renderHeaderSection()}
         </HeaderToolbar>
       </AppBar>
       {/* Drawer (sidebar) */}
@@ -122,20 +123,20 @@ function Sidebar({ HeaderSection, SidebarSection, MainSection }) {
         classes={{ paper: classes.drawerPaper }}
       >
         <div className={classes.drawerHeader}>
-          <h2>Add Colors</h2>
+          <Typography variant='h6'>{sidebarTitle}</Typography>
           <IconButton onClick={e => setOpened(false)}>
             <ChevronLeftIcon />
           </IconButton>
         </div>
         <Divider />
         {/* sidebar content placeholder */}
-        <SidebarSection />
+        {renderSidebarSection()}
       </Drawer>
       {/* Main */}
       <main className={clsx(classes.content, opened && classes.contentShift)}>
         <div className={classes.drawerHeader} />
         {/* main content placeholder */}
-        <MainSection />
+        {renderMainSection()}
       </main>
     </div>
   )

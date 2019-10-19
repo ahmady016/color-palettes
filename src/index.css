@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:400,500,500i,700&display=swap');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
+/* #region default styles */
 body {
   margin: 0;
   font-family: -apple-system, "Roboto" ,"Segoe UI", "Oxygen",
@@ -14,6 +15,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+/* #endregion */
 
 /* #region helper classes */
 .hidden {
@@ -57,6 +59,12 @@ code {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+.flex-column-around-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
 }
 .flex-g-1 {
   flex-grow: 1;
@@ -297,7 +305,7 @@ code {
   width: 75%;
 }
 .w-80 {
-  width: 80%;
+  width: 80% !important;
 }
 .w-90 {
   width: 90%;
@@ -343,6 +351,9 @@ code {
 }
 .border-b-1 {
   border-bottom: 1px solid #84f5b0;
+}
+.border-r-0 {
+  border-radius: 0 !important;
 }
 .content-text {
   line-height: 1.8rem;
