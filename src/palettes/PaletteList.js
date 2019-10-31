@@ -2,7 +2,8 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import Card from '@material-ui/core/Card';
+import Link from '@material-ui/core/Link'
+import Card from '@material-ui/core/Card'
 import CardActionArea from '@material-ui/core/CardActionArea'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
@@ -23,12 +24,16 @@ const PaletteListTitle = styled.h1`
     margin-right: 0.5rem;
   }
 `
+const NewPaletteLink = styled(Link)`
+  color: #fff !important;
+  font-size: 1rem;
+`
 const PaletteListItems = styled.div`
   width: 90%;
   margin: auto;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 `
 const ColorBoxesWrapper = styled(CardContent)`
@@ -76,9 +81,16 @@ function PaletteCard({ id, name, emoji, colors, history }) {
 function PaletteList({ palettes, history }) {
   return (
     <PaletteListWrapper>
-      <PaletteListTitle>
-        <span>🎨</span>
-        <span>Palette List</span>
+      <PaletteListTitle className='flex-between'>
+        <div className='flex-b-75'>
+          <span>🎨</span>
+          <span>Palette List</span>
+        </div>
+        <div className='flex-b-25'>
+          <NewPaletteLink component='button' onClick={e => history.push('/palette/new')}>
+            Create New Palette
+          </NewPaletteLink>
+        </div>
       </PaletteListTitle>
       <PaletteListItems>
         {palettes.map(palette =>

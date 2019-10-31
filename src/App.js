@@ -8,14 +8,15 @@ import { getPaletteList, getPaletteColors, getPaletteColor } from './helpers/see
 import NewPalette from './palettes/NewPalette'
 
 function App () {
+  const [palettes, setPalettes] = React.useState(() => getPaletteList())
   return (
     <div className='container'>
       <BrowserRouter>
         <Switch>
           <Route path='/palette-list'
-            render={props => <PaletteList {...props} palettes={getPaletteList()} />} />
+            render={props => <PaletteList {...props} palettes={palettes} />} />
           <Route path='/palette/new'
-            render={props => <NewPalette {...props} /> } />
+            render={props => <NewPalette {...props} palettes={palettes} setPalettes={setPalettes} /> } />
           <Route path='/palette/:id/:colorId'
             render={props => <Palette {...props} {...getPaletteColor(props.match.params.id, props.match.params.colorId)} />} />
           <Route path='/palette/:id'

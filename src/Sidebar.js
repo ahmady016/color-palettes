@@ -78,7 +78,7 @@ const OpenButton = styled(Button)`
   border-radius: 0 !important;
 `
 const HeaderToolbar = styled(Toolbar)`
-  justify-content: space-between;
+  justify-content: ${({ opened }) => opened ? 'space-around' : 'space-between'};
   padding: 0 !important;
 `
 //#endregion
@@ -95,11 +95,14 @@ function Sidebar({ renderHeaderSection, renderSidebarSection, renderMainSection,
         position='fixed'
         className={clsx(classes.appBar, opened && classes.appBarShift)}
       >
-        <HeaderToolbar>
-          <OpenButton size='large'
+        <HeaderToolbar opened={opened}>
+          <OpenButton
+            className={clsx(opened && classes.hide)}
             variant='contained'
+            size='large'
             color='default'
-            onClick={e => setOpened(true)}>
+            onClick={e => setOpened(true)}
+          >
             <IconButton
               color="inherit"
               aria-label="open drawer"
@@ -111,7 +114,7 @@ function Sidebar({ renderHeaderSection, renderSidebarSection, renderMainSection,
             {sidebarButtonText}
           </OpenButton>
           {/* header content placeholder */}
-          {renderHeaderSection()}
+          {renderHeaderSection(opened)()}
         </HeaderToolbar>
       </AppBar>
       {/* Drawer (sidebar) */}

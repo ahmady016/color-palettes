@@ -37,6 +37,11 @@ code {
   justify-content: space-between;
   align-items: center;
 }
+.flex-between-end {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
 .flex-around {
   display: flex;
   justify-content: space-around;
