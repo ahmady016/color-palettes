@@ -245,10 +245,12 @@ export const getPaletteColors = (
   palettes = seedPalettesAsArray
 ) => {
   let _palette = getPalette(palettes, paletteId)
-  return {
-    ..._palette,
-    colors: genLevels ? getColorsLevels(_palette.colors) : _palette.colors
-  }
+  if(_palette)
+    return {
+      ..._palette,
+      colors: genLevels ? getColorsLevels(_palette.colors) : _palette.colors
+    }
+  return {}
 }
 
 export const getPaletteList = () => Object.keys(seedPalettes).map(key => getPaletteColors(key))
@@ -259,9 +261,12 @@ export const getPaletteColor = (
   palettes = seedPalettesAsArray
 ) => {
   let _palette = getPalette(palettes, paletteId)
-  let _colorInfo = _palette.colors.find(color => color.name.toLowerCase().replace(/ /g, '-') === colorId)
-  return {
-    ..._palette,
-    colors: (_colorInfo) ? getColorLevels(_colorInfo.name, _colorInfo.color) : []
+  if(_palette) {
+    let _colorInfo = _palette.colors.find(color => color.name.toLowerCase().replace(/ /g, '-') === colorId)
+    return {
+      ..._palette,
+      colors: (_colorInfo) ? getColorLevels(_colorInfo.name, _colorInfo.color) : []
+    }
   }
+  return {}
 }

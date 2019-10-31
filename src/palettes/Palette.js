@@ -231,7 +231,6 @@ function ColorBox ({ paletteId, colorId, name, color, isOneColor }) {
 }
 
 function Palette ({ id, name, emoji, colors, history }) {
-  console.log("TCL: Palette -> colors", colors)
   const isOneColor = Array.isArray(colors)
   const [currentLevel, setCurrentLevel] = React.useState(500)
   const [colorFormat, setColorFormat] = React.useState('hex')
@@ -247,6 +246,8 @@ function Palette ({ id, name, emoji, colors, history }) {
     () => setSnackbarOpened(false),
     [setSnackbarOpened]
   )
+  if(!id)
+    return <h1 className='px-1'>Palette Not Found</h1>
   return (
     <>
       <PaletteWrapper className='palette'>
