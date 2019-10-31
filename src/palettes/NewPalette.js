@@ -45,10 +45,28 @@ const ColorBoxesWrapper = styled.div`
   grid-template-rows: repeat(4, 25%);
 `
 const ColorBoxWrapper = styled.div`
+  position: relative;
   background-color: ${ ({ color }) => color };
   color: ${ ({ color }) => isDarkColor(color) ? '#fff' : '#000' };
   display: flex;
   justify-content: center;
+  align-items: center;
+  & svg {
+    transition: all 0.4s ease-in-out;
+    cursor: pointer;
+  }
+  &:hover svg {
+    color: #fff;
+    transform: scale(1.3);
+  }
+`
+const ColorBoxContent = styled.div`
+  z-index: 2;
+  position: absolute;
+  bottom: 0.2rem;
+  width: 92%;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
 `
 //#endregion
@@ -239,12 +257,16 @@ function AddColorForm({ selectedColor, setSelectedColor, colors, setColors }) {
   )
 }
 
-function ColorBoxes({ colors }) {
+function ColorBoxes({ colors, setColors }) {
+  const deleteColor = colorName => e => void setColors(colors => colors.filter(color => color.name !== colorName))
   return (
     <ColorBoxesWrapper>
-      {colors.map(({name, color}) => (
+      {colors.map(({ name, color }) => (
         <ColorBoxWrapper key={name} color={color}>
-          <span>{name}</span>
+          <ColorBoxContent>
+            <span>{name}</span>
+            <DeleteIcon onClick={deleteColor(name)} />
+          </ColorBoxContent>
         </ColorBoxWrapper>
       ))}
     </ColorBoxesWrapper>
@@ -260,7 +282,7 @@ function NewPalette({ palettes, setPalettes, history }) {
       sidebarButtonText='Add Colors'
       renderHeaderSection={(opened) => () => <NewPaletteForm opened={opened} colors={colors} setColors={setColors} palettes={palettes} setPalettes={setPalettes} history={history} />}
       renderSidebarSection={() => <AddColorForm colors={colors} setColors={setColors} selectedColor={selectedColor} setSelectedColor={setSelectedColor} />}
-      renderMainSection={() => <ColorBoxes colors={colors} />}
+      renderMainSection={() => <ColorBoxes colors={colors} setColors={setColors} />}
     />
   )
 }
