@@ -13,24 +13,11 @@ import SaveIcon from '@material-ui/icons/Save'
 import DeleteIcon from '@material-ui/icons/Delete'
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
 
-import { isDarkColor, getColorName, getRandomColor } from '../helpers/colorLevels'
-import Sidebar from '../Sidebar'
+import { _initialPaletteColors, createNewPalette } from '../helpers/seedPalettes'
+import { isDarkColor, getRandomColor, getColorName } from '../helpers/colorLevels'
+import LS from '../helpers/localStorage'
 
-// #region app const and variables
-const _initialColors = [
-  { name: getColorName('#00ff00'), color: '#00ff00' },
-  { name: getColorName('#ff0000'), color: '#ff0000' },
-  { name: getColorName('#0000ff'), color: '#0000ff' }
-]
-const createNewPalette = (paletteName, paletteEmoji, colors) => {
-  return {
-    id: paletteName.toLowerCase().replace(/ /g, '-'),
-    name: paletteName,
-    emoji: paletteEmoji,
-    colors
-  }
-}
-// #endregion
+import Sidebar from '../Sidebar'
 
 //#region styled components
 const EmojiWrapper = styled.div`
@@ -75,7 +62,9 @@ function NewPaletteForm({ opened, colors, setColors, palettes, setPalettes, hist
 
   //#region Form Handlers
   const addNewPalette = e => {
-    setPalettes( palettes => [...palettes, createNewPalette(paletteName, paletteEmoji, colors)] )
+    let newPalette = createNewPalette(paletteName, paletteEmoji, colors)
+    LS.set('PALETTES', [...palettes, newPalette])
+    setPalettes([...palettes, newPalette])
     history.push('/palette-list')
   }
   const onError = errors => {
@@ -168,7 +157,7 @@ function AddColorForm({ selectedColor, setSelectedColor, colors, setColors }) {
 
   //#region Form Handlers
   const onColorPicked = newColor => {
-    let _colorName = getColorName(newColor.hex)
+    let _colorName = getColorName(newColor.hex).replace(/#/,'h')
     setColorName(_colorName)
     setSelectedColor({ name: _colorName, color: newColor.hex })
   }
@@ -263,7 +252,7 @@ function ColorBoxes({ colors }) {
 }
 
 function NewPalette({ palettes, setPalettes, history }) {
-  const [colors, setColors] = React.useState(_initialColors)
+  const [colors, setColors] = React.useState(_initialPaletteColors)
   const [selectedColor, setSelectedColor] = React.useState(colors[0])
   return (
     <Sidebar

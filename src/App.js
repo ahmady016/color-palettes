@@ -2,13 +2,14 @@ import React from 'react'
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 
 import PaletteList from './palettes/PaletteList'
+import NewPalette from './palettes/NewPalette'
 import Palette from './palettes/Palette'
 
-import { getPaletteList, getPaletteColors, getPaletteColor } from './helpers/seedPalettes'
-import NewPalette from './palettes/NewPalette'
+import LS from './helpers/localStorage'
+import { getPaletteColors, getPaletteColor } from './helpers/seedPalettes'
 
 function App () {
-  const [palettes, setPalettes] = React.useState(() => getPaletteList())
+  const [palettes, setPalettes] = React.useState(() => LS.get('PALETTES'))
   return (
     <div className='container'>
       <BrowserRouter>

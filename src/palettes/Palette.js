@@ -137,7 +137,6 @@ const CopyMessageColor = styled.div`
   font-weight: 200;
 `
 const PaletteFooter = styled.footer`
-  width: 100vw;
   height: 10vh;
   display: flex;
   justify-content: flex-end;

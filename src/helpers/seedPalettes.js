@@ -1,4 +1,4 @@
-import getColorsLevels, { getColorLevels } from './colorLevels'
+import getColorsLevels, { getColorLevels, getColorName } from './colorLevels'
 
 export const seedPalettes = {
   "material-ui-colors": {
@@ -236,8 +236,9 @@ export const seedPalettes = {
   }
 }
 
-const seedPalettesAsArray = Object.keys(seedPalettes).map(key => ({ ...seedPalettes[key], id: key }) )
-const getPalette = (palettes, paletteId) => palettes.find(palette => palette.id === paletteId)
+export const seedPalettesAsArray = Object.keys(seedPalettes).map(key => ({ ...seedPalettes[key], id: key }) )
+
+export const getPalette = (palettes, paletteId) => palettes.find(palette => palette.id === paletteId)
 
 export const getPaletteColors = (
   paletteId = 'flat-ui-colors-indian',
@@ -253,8 +254,6 @@ export const getPaletteColors = (
   return {}
 }
 
-export const getPaletteList = () => Object.keys(seedPalettes).map(key => getPaletteColors(key))
-
 export const getPaletteColor = (
   paletteId = 'flat-ui-colors-indian',
   colorId = 'orchidorange',
@@ -269,4 +268,19 @@ export const getPaletteColor = (
     }
   }
   return {}
+}
+
+export const _initialPaletteColors = [
+  { name: getColorName('#00ff00'), color: '#00ff00' },
+  { name: getColorName('#ff0000'), color: '#ff0000' },
+  { name: getColorName('#0000ff'), color: '#0000ff' }
+]
+
+export const createNewPalette = (paletteName, paletteEmoji, colors) => {
+  return {
+    id: paletteName.toLowerCase().replace(/ /g, '-'),
+    name: paletteName,
+    emoji: paletteEmoji,
+    colors
+  }
 }
