@@ -236,19 +236,32 @@ export const seedPalettes = {
   }
 }
 
-export const getPaletteColors = (paletteId = 'flat-ui-colors-indian', genLevels = false) => ({
-  ...seedPalettes[paletteId],
-  id: paletteId,
-  colors: genLevels ? getColorsLevels(seedPalettes[paletteId].colors) : seedPalettes[paletteId].colors
-})
+const seedPalettesAsArray = Object.keys(seedPalettes).map(key => ({ ...seedPalettes[key], id: key }) )
+const getPalette = (palettes, paletteId) => palettes.find(palette => palette.id === paletteId)
+
+export const getPaletteColors = (
+  paletteId = 'flat-ui-colors-indian',
+  genLevels = false,
+  palettes = seedPalettesAsArray
+) => {
+  let _palette = getPalette(palettes, paletteId)
+  return {
+    ..._palette,
+    colors: genLevels ? getColorsLevels(_palette.colors) : _palette.colors
+  }
+}
 
 export const getPaletteList = () => Object.keys(seedPalettes).map(key => getPaletteColors(key))
 
-export const getPaletteColor = (paletteId = 'flat-ui-colors-indian', colorId = 'orchidorange') => {
-  let colorInfo = seedPalettes[paletteId].colors.find(color => color.name.toLowerCase().replace(/ /g, '-') === colorId)
+export const getPaletteColor = (
+  paletteId = 'flat-ui-colors-indian',
+  colorId = 'orchidorange',
+  palettes = seedPalettesAsArray
+) => {
+  let _palette = getPalette(palettes, paletteId)
+  let _colorInfo = _palette.colors.find(color => color.name.toLowerCase().replace(/ /g, '-') === colorId)
   return {
-    ...seedPalettes[paletteId],
-    id: paletteId,
-    colors: (colorInfo) ? getColorLevels(colorInfo.name, colorInfo.color) : []
+    ..._palette,
+    colors: (_colorInfo) ? getColorLevels(_colorInfo.name, _colorInfo.color) : []
   }
 }

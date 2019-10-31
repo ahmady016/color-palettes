@@ -18,9 +18,9 @@ function App () {
           <Route path='/palette/new'
             render={props => <NewPalette {...props} palettes={palettes} setPalettes={setPalettes} /> } />
           <Route path='/palette/:id/:colorId'
-            render={props => <Palette {...props} {...getPaletteColor(props.match.params.id, props.match.params.colorId)} />} />
+            render={props => <Palette {...props} {...getPaletteColor(props.match.params.id, props.match.params.colorId, palettes)} />} />
           <Route path='/palette/:id'
-            render={props => <Palette {...props} {...getPaletteColors(props.match.params.id, true)} />} />
+            render={props => <Palette {...props} {...getPaletteColors(props.match.params.id, true, palettes)} />} />
           <Redirect to='/palette-list' />
         </Switch>
       </BrowserRouter>

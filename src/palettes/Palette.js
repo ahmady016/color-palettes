@@ -42,6 +42,7 @@ const HomeButton = styled(Button)`
 `
 const PaletteColors = styled.div`
   height: 100%;
+  min-height: 75vh;
   display: flex;
   flex-wrap: wrap;
 `
@@ -136,6 +137,7 @@ const CopyMessageColor = styled.div`
   font-weight: 200;
 `
 const PaletteFooter = styled.footer`
+  width: 100vw;
   height: 10vh;
   display: flex;
   justify-content: flex-end;
