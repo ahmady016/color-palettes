@@ -3,6 +3,8 @@ import React from 'react'
 import styled from 'styled-components'
 import clsx from 'clsx'
 
+import { SortableContainer, SortableElement, arrayMove  } from 'react-sortable-hoc'
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
 import { ChromePicker } from 'react-color'
 import { Picker as EmojiPicker} from 'emoji-mart'
 import 'emoji-mart/css/emoji-mart.css'
@@ -11,7 +13,6 @@ import Button from '@material-ui/core/Button'
 import EmojiEmotionsOutlinedIcon from '@material-ui/icons/EmojiEmotionsOutlined'
 import SaveIcon from '@material-ui/icons/Save'
 import DeleteIcon from '@material-ui/icons/Delete'
-import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
 
 import { _initialPaletteColors, createNewPalette } from '../helpers/seedPalettes'
 import { isDarkColor, getRandomColor, getColorName } from '../helpers/colorLevels'
@@ -38,6 +39,7 @@ const AddColorButton = styled(Button)`
   color: ${ ({ bgColor }) => isDarkColor(bgColor) ? '#fff' : '#000' } !important;
 `
 const ColorBoxesWrapper = styled.div`
+  cursor: grab;
   width: 100%;
   height: 85vh;
   display: grid;
@@ -257,20 +259,31 @@ function AddColorForm({ selectedColor, setSelectedColor, colors, setColors }) {
   )
 }
 
-function ColorBoxes({ colors, setColors }) {
+const ColorBox = SortableElement(({ name, color, setColors }) => {
   const deleteColor = colorName => e => void setColors(colors => colors.filter(color => color.name !== colorName))
   return (
+    <ColorBoxWrapper color={color}>
+      <ColorBoxContent>
+        <span>{name}</span>
+        <DeleteIcon onClick={deleteColor(name)} />
+      </ColorBoxContent>
+    </ColorBoxWrapper>
+  )
+})
+
+const SortableList = SortableContainer(({ colors, setColors }) => {
+  return (
     <ColorBoxesWrapper>
-      {colors.map(({ name, color }) => (
-        <ColorBoxWrapper key={name} color={color}>
-          <ColorBoxContent>
-            <span>{name}</span>
-            <DeleteIcon onClick={deleteColor(name)} />
-          </ColorBoxContent>
-        </ColorBoxWrapper>
+      {colors.map((color, i) => (
+        <ColorBox key={color.name} index={i} {...color} setColors={setColors} />
       ))}
     </ColorBoxesWrapper>
   )
+})
+
+function ColorBoxes({ colors, setColors }) {
+  const reorderColors = ({ oldIndex, newIndex }) => void setColors(arrayMove(colors, oldIndex, newIndex))
+  return <SortableList colors={colors} setColors={setColors} onSortEnd={reorderColors} axis='xy' />
 }
 
 function NewPalette({ palettes, setPalettes, history }) {
