@@ -21,6 +21,9 @@ code {
 .hidden {
   display: none !important;
 }
+.pos-relative {
+  position: relative;
+}
 .flex {
   display: flex;
 }

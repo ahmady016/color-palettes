@@ -9,6 +9,7 @@ import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import Avatar from '@material-ui/core/Avatar'
 import Divider from '@material-ui/core/Divider'
+import DeleteIcon from '@material-ui/icons/Delete'
 
 //#region styled components
 const PaletteListWrapper = styled.div`
@@ -36,6 +37,28 @@ const PaletteListItems = styled.div`
   justify-content: flex-start;
   align-items: center;
 `
+const CardDiv = styled(Card)`
+  position: relative;
+  flex-basis: 30%;
+  margin: 0.5rem;
+  &:hover div {
+    opacity: 1;
+  }
+`
+const DeletePaletteDiv = styled.div`
+  cursor: pointer;
+  z-index: 99;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 1.6rem;
+  height: 1.6rem;
+  padding: 0.3rem;
+  background-color: #222;
+  color: #fff;
+  opacity: 0;
+  transition: all 0.4s ease-in-out;
+`
 const ColorBoxesWrapper = styled(CardContent)`
   width: 90%;
   height: 10rem;
@@ -59,9 +82,13 @@ const goToPalette = (id, history) => e => void history.push(`/palette/${id}`)
 
 const ColorBox = ({ color }) => <ColorBoxWrapper color={color} />
 
-function PaletteCard({ id, name, emoji, colors, history }) {
+function PaletteCard({ id, name, emoji, colors, history, setPalettes }) {
+  const deletePalette = e => setPalettes(palettes => palettes.filter(palette => palette.id !== id))
   return (
-    <Card className='flex-b-30 m-05'>
+    <CardDiv>
+      <DeletePaletteDiv onClick={deletePalette}>
+        <DeleteIcon />
+      </DeletePaletteDiv>
       <CardActionArea onClick={goToPalette(id, history)}>
         <ColorBoxesWrapper>
           {colors.map(({name, color}) =>
@@ -74,11 +101,11 @@ function PaletteCard({ id, name, emoji, colors, history }) {
           <Avatar><span>{emoji}</span></Avatar>
         </CardActions>
       </CardActionArea>
-    </Card>
+    </CardDiv>
   )
 }
 
-function PaletteList({ palettes, history }) {
+function PaletteList({ palettes, setPalettes, history }) {
   return (
     <PaletteListWrapper>
       <PaletteListTitle className='flex-between'>
@@ -94,7 +121,7 @@ function PaletteList({ palettes, history }) {
       </PaletteListTitle>
       <PaletteListItems>
         {palettes.map(palette =>
-          <PaletteCard key={palette.id} history={history} {...palette} />
+          <PaletteCard key={palette.id} history={history} {...palette} setPalettes={setPalettes} />
         )}
       </PaletteListItems>
     </PaletteListWrapper>

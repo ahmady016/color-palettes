@@ -10,12 +10,16 @@ import { getPaletteColors, getPaletteColor } from './helpers/seedPalettes'
 
 function App () {
   const [palettes, setPalettes] = React.useState(() => LS.get('PALETTES'))
+  React.useEffect(
+    () => LS.set('PALETTES', palettes),
+    [palettes]
+  )
   return (
     <div className='container'>
       <BrowserRouter>
         <Switch>
           <Route path='/palette-list'
-            render={props => <PaletteList {...props} palettes={palettes} />} />
+            render={props => <PaletteList {...props} palettes={palettes} setPalettes={setPalettes} />} />
           <Route path='/palette/new'
             render={props => <NewPalette {...props} palettes={palettes} setPalettes={setPalettes} /> } />
           <Route path='/palette/:id/:colorId'

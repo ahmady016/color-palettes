@@ -17,7 +17,6 @@ import DeleteIcon from '@material-ui/icons/Delete'
 
 import { _initialPaletteColors, createNewPalette } from '../helpers/seedPalettes'
 import { isDarkColor, getRandomColor, getColorName } from '../helpers/colorLevels'
-import LS from '../helpers/localStorage'
 
 import Sidebar from '../Sidebar'
 
@@ -91,9 +90,7 @@ function NewPaletteForm({ opened, colors, palettes, setPalettes, history }) {
 
   //#region Form Handlers
   const addNewPalette = e => {
-    let newPalette = createNewPalette(paletteName, paletteEmoji, colors)
-    LS.set('PALETTES', [...palettes, newPalette])
-    setPalettes([...palettes, newPalette])
+    setPalettes([...palettes, createNewPalette(paletteName, paletteEmoji, colors)])
     history.push('/palette-list')
   }
   const onError = errors => {
