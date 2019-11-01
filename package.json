@@ -12,9 +12,10 @@
     "@material-ui/core": "^4.3.2",
     "@material-ui/icons": "^4.5.1",
     "react-material-ui-form-validator": "^2.0.9",
+    "react-sortable-hoc": "^1.10.1",
+    "react-color": "^2.17.3",
     "chroma-js": "^2.0.4",
     "emoji-mart": "^2.11.1",
-    "react-color": "^2.17.3",
     "rc-slider": "^8.6.13",
     "clsx": "^1.0.4",
     "react-scripts": "3.1.0"
