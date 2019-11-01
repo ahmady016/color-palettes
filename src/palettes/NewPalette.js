@@ -9,6 +9,7 @@ import { ChromePicker } from 'react-color'
 import { Picker as EmojiPicker} from 'emoji-mart'
 import 'emoji-mart/css/emoji-mart.css'
 
+import Icon from '@material-ui/core/Icon'
 import Button from '@material-ui/core/Button'
 import EmojiEmotionsOutlinedIcon from '@material-ui/icons/EmojiEmotionsOutlined'
 import SaveIcon from '@material-ui/icons/Save'
@@ -21,15 +22,23 @@ import LS from '../helpers/localStorage'
 import Sidebar from '../Sidebar'
 
 //#region styled components
+const ClearAllWrapper = styled.div`
+  flex-basis: 85%;
+  position: relative;
+  left: 7%;
+  display: flex;
+  justify-content: center;
+`
 const EmojiWrapper = styled.div`
   position: relative;
   display: contents;
 `
 const EmojiIcon = styled(EmojiEmotionsOutlinedIcon)`
+  transform: scale(0.8);
   cursor: pointer;
   position: absolute;
   right: 0;
-  bottom: ${ ({ emojiInvalid }) => emojiInvalid ? '22px' : '2px'};
+  bottom: ${ ({ emojiInvalid }) => emojiInvalid ? '20px' : '0'};
 `
 const AddColorButton = styled(Button)`
   flex-basis: 100%;
@@ -73,7 +82,7 @@ const ColorBoxContent = styled.div`
 `
 //#endregion
 
-function NewPaletteForm({ opened, colors, setColors, palettes, setPalettes, history }) {
+function NewPaletteForm({ opened, colors, palettes, setPalettes, history }) {
   const [paletteName, setPaletteName] = React.useState('')
   const [paletteEmoji, setPaletteEmoji] = React.useState('')
 
@@ -90,6 +99,7 @@ function NewPaletteForm({ opened, colors, setColors, palettes, setPalettes, hist
   const onError = errors => {
     errors = errors.map( error => ({ field: error.props.name, error: error.getErrorMessage() }) )
     console.log("TCL: NewPaletteForm -> onError", errors)
+    setEmojiInvalid(errors.some( ({ field }) => field === 'paletteEmoji' ))
   }
   const emojiChanged = selectedEmoji => {
     setPaletteEmoji(selectedEmoji.native)
@@ -154,20 +164,37 @@ function NewPaletteForm({ opened, colors, setColors, palettes, setPalettes, hist
         className='flex-b-20 border-r-0'
         variant='contained'
         color='primary'
+        disabled={colors.length < 5}
       >
         <SaveIcon className='mr-05' />
         Save All
       </Button>
       <Button
-        className='flex-b-20 border-r-0'
+        variant='contained'
+        className='flex-b-15 border-r-0'
+        onClick={e => history.push('/palette-list')}
+      >
+        <Icon className='mr-05'>arrow_back</Icon>
+        <span>Back</span>
+      </Button>
+    </ValidatorForm>
+  )
+}
+
+function SidebarTitle({ colors, setColors }) {
+  return (
+    <ClearAllWrapper>
+      <Button
+        className='border-r-0'
         variant='contained'
         color='secondary'
+        disabled={!colors.length}
         onClick={e => setColors([])}
       >
         <DeleteIcon className='mr-05' />
-        Clear All
+        Clear All Colors
       </Button>
-    </ValidatorForm>
+    </ClearAllWrapper>
   )
 }
 
@@ -205,20 +232,21 @@ function AddColorForm({ selectedColor, setSelectedColor, colors, setColors }) {
 
   return (
     <div className='flex-column-around-center h-100'>
-      <Button
-        className='w-80 border-r-0'
-        variant='contained'
-        color='default'
-        size='large'
-        onClick={ _ => onColorPicked({ hex: getRandomColor() }) }
-        >
-          Random Color
-      </Button>
       <ChromePicker
         className='w-80'
         color={selectedColor.color}
         onChangeComplete={onColorPicked}
       />
+      <Button
+        className='w-80 border-r-0'
+        variant='contained'
+        color='default'
+        size='large'
+        disabled={paletteFilled}
+        onClick={ _ => onColorPicked({ hex: getRandomColor() }) }
+        >
+          Random Color
+      </Button>
       <ValidatorForm
         className='w-80 flex-between flex-wrap'
         onSubmit={addNewColor}
@@ -291,9 +319,9 @@ function NewPalette({ palettes, setPalettes, history }) {
   const [selectedColor, setSelectedColor] = React.useState(colors[0])
   return (
     <Sidebar
-      sidebarTitle='Design Your Palette'
       sidebarButtonText='Add Colors'
-      renderHeaderSection={(opened) => () => <NewPaletteForm opened={opened} colors={colors} setColors={setColors} palettes={palettes} setPalettes={setPalettes} history={history} />}
+      renderHeaderSection={(opened) => () => <NewPaletteForm opened={opened} colors={colors} palettes={palettes} setPalettes={setPalettes} history={history} />}
+      renderSidebarTitle={() => <SidebarTitle colors={colors} setColors={setColors} />}
       renderSidebarSection={() => <AddColorForm colors={colors} setColors={setColors} selectedColor={selectedColor} setSelectedColor={setSelectedColor} />}
       renderMainSection={() => <ColorBoxes colors={colors} setColors={setColors} />}
     />

@@ -83,7 +83,7 @@ const HeaderToolbar = styled(Toolbar)`
 `
 //#endregion
 
-function Sidebar({ renderHeaderSection, renderSidebarSection, renderMainSection, sidebarTitle, sidebarButtonText }) {
+function Sidebar({ renderHeaderSection, renderSidebarSection, renderMainSection, renderSidebarTitle, sidebarButtonText }) {
   const classes = useStyles()
   const [opened, setOpened] = React.useState(true)
 
@@ -126,7 +126,8 @@ function Sidebar({ renderHeaderSection, renderSidebarSection, renderMainSection,
         classes={{ paper: classes.drawerPaper }}
       >
         <div className={classes.drawerHeader}>
-          <Typography variant='h6'>{sidebarTitle}</Typography>
+          {/* Sidebar header content placeholder */}
+          {renderSidebarTitle()}
           <IconButton onClick={e => setOpened(false)}>
             <ChevronLeftIcon />
           </IconButton>
